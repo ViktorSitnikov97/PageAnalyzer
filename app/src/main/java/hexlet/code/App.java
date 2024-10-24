@@ -32,7 +32,6 @@ public class App {
         var sql = new BufferedReader(new InputStreamReader(url))
                 .lines()
                 .collect(Collectors.joining("\n"));
-
         log.info(sql);
 
         // Установка соединения и инициализация БД через стейтмент
