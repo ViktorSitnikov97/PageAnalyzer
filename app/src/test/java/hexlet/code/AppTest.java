@@ -67,6 +67,7 @@ public class AppTest {
             var response = client.get(NamedRoutes.urlPath(url.getId()));
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://github.com");
+            response.close();
         });
     }
 
@@ -76,6 +77,7 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/1234567");
             assertThat(response.code()).isEqualTo(404);
+            response.close();
         });
     }
 }
