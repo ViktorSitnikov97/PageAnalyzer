@@ -36,7 +36,7 @@ public class UrlController {
 
     private static String normalizedUrl(String url) throws URISyntaxException {
         URI uriUrl = new URI(url);
-        return uriUrl.getScheme() + "//:" + uriUrl.getAuthority();
+        return uriUrl.getScheme() + "://" + uriUrl.getAuthority();
     }
 
     public static void create(Context ctx) throws SQLException {
