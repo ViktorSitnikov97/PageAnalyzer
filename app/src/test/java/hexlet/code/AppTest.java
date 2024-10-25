@@ -41,6 +41,7 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https");
             assertThat(UrlRepository.existsByUrl("https://github.com")).isTrue();
+            response.close();
         });
     }
 
