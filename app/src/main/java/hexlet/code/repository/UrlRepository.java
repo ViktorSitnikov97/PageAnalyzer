@@ -1,6 +1,8 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.Url;
+import hexlet.code.utils.FormattedTime;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ public class UrlRepository extends BaseRepository {
              PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             String nameUrl = url.getName();
-            Timestamp createdAt = url.getCreatedAt();
+            Timestamp createdAt = FormattedTime.getCurrentTime();
 
             preparedStatement.setString(1, nameUrl);
             preparedStatement.setTimestamp(2, createdAt);
@@ -29,6 +31,7 @@ public class UrlRepository extends BaseRepository {
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if(generatedKeys.next()) {
                 url.setId(generatedKeys.getLong("id"));
+                url.setCreatedAt(createdAt);
             } else {
                 throw new SQLException("DB have not returned an id after saving an entity");
             }
@@ -45,10 +48,11 @@ public class UrlRepository extends BaseRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                var urlName = resultSet.getString("url");
+                var urlName = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
-                Url url = new Url(urlName, createdAt);
+                Url url = new Url(urlName);
                 url.setId(id);
+                url.setCreatedAt(createdAt);
                 return Optional.of(url);
             }
             return Optional.empty();
@@ -79,8 +83,9 @@ public class UrlRepository extends BaseRepository {
                 Timestamp createdAt = resultSet.getTimestamp("created_at");
                 Long id = resultSet.getLong("id");
 
-                Url url = new Url(nameUrl, createdAt);
+                Url url = new Url(nameUrl);
                 url.setId(id);
+                url.setCreatedAt(createdAt);
                 urls.add(url);
             }
             return urls;
