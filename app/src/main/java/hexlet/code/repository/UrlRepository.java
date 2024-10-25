@@ -29,7 +29,7 @@ public class UrlRepository extends BaseRepository {
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if(generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 url.setId(generatedKeys.getLong("id"));
                 url.setCreatedAt(createdAt);
             } else {
