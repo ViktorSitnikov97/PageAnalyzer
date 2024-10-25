@@ -98,11 +98,7 @@ public class UrlRepository extends BaseRepository {
              PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setLong(1, id);
-            var count = preparedStatement.executeUpdate();
-
-            if (count != 1) {
-                throw new SQLException("Urls has not been deleted");
-            }
+            preparedStatement.executeUpdate();
         }
     }
 }

@@ -7,6 +7,7 @@ import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,7 +30,8 @@ public class UrlController {
 
     public static void show(Context ctx) throws SQLException {
         Long id = ctx.pathParamAsClass("id", Long.class).get();
-        Url url = UrlRepository.findById(id).get();
+        Url url = UrlRepository.findById(id)
+                .orElseThrow(() -> new NotFoundResponse("Site with id = " + id + "not found"));
         UrlPage page = new UrlPage(url);
         ctx.render("urls/show.jte", model("page", page));
     }

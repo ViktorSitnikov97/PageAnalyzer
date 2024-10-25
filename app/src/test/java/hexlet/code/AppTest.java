@@ -69,4 +69,13 @@ public class AppTest {
             assertThat(response.body().string()).contains("https://github.com");
         });
     }
+
+    @Test
+    public void negativeTestUrlNotFound() throws SQLException {
+        UrlRepository.delete(1234567L);
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls/1234567");
+            assertThat(response.code()).isEqualTo(404);
+        });
+    }
 }
