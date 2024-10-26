@@ -32,7 +32,7 @@ public class UrlController {
         Long id = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("Site with id = " + id + "not found"));
-        UrlPage page = new UrlPage(url);
+        UrlPage page = new UrlPage(url, null);
         ctx.render("urls/show.jte", model("page", page));
     }
 
