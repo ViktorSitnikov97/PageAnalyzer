@@ -32,7 +32,7 @@
         </div>
     </nav>
     </body>
-    <main>
+    <main class="flex-grow-1">
         @if(page != null && page.getFlash() != null)
             <div class="alert alert-${page.getFlashType()} alert-dismissible fade show" role="alert">
                 ${page.getFlash()}
@@ -41,8 +41,13 @@
         @endif
         ${content}
     </main>
-    <footer>
-
+    <footer class="footer border-top py-3 mt-5 bg-light">
+        <div class="container-xl">
+            <div class="text-center">
+                created by
+                <a href="https://github.com/ViktorSitnikov97" target="_blank">Viktor Sitnikov</a>
+            </div>
+        </div>
     </footer>
 
 </html>
