@@ -29,8 +29,10 @@ content = @`
                         <a href = "${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                     </td>
                     <td>
+
                     </td>
                     <td>
+
                     </td>
                 </tr>
                 </tbody>
