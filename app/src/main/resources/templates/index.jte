@@ -1,4 +1,3 @@
-
 @template.layout.page(
 content = @`
     <div class="container-fluid bg-dark p-5">
