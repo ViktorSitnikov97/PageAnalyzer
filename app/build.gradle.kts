@@ -28,6 +28,8 @@ dependencies {
     implementation("io.javalin:javalin-rendering:6.1.3")
     implementation("gg.jte:jte:3.0.1")
     implementation("gg.jte:jte:3.0.1")
+    implementation("commons-validator:commons-validator:1.8.0") // валидация URL-адреса
+    implementation("org.jsoup:jsoup:1.17.2") // парсинг HTML-страницы
 
     implementation("com.h2database:h2:2.2.220") // для работы с БД
     implementation("com.zaxxer:HikariCP:5.0.1")// Хикари БД
