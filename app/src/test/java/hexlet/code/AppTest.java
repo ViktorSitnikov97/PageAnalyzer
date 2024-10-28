@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+
 import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.CheckUrlRepository;
 import hexlet.code.repository.UrlRepository;
@@ -9,8 +10,9 @@ import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,7 @@ public class AppTest {
     }
 
     @BeforeEach
-    public void setUpEach() throws Exception {
+    public final void setUpEach() throws Exception {
         app = App.getApp();
     }
 
@@ -123,17 +125,18 @@ public class AppTest {
             var id = 1L;
             response = client.post(NamedRoutes.urlCheckPath(id));
             responseBodyString = response.body().string();
-//            assertThat(response.code()).isEqualTo(200);
-//            assertThat(responseBodyString).contains("Check title");
-//            assertThat(responseBodyString).contains("Check description");
-//            assertThat(responseBodyString).contains("Check h1");
-//
-//            UrlCheck urlCheck = CheckUrlRepository.getLastCheck(id).get();
-//
-//            assertEquals(id, urlCheck.getUrlId());
-//            assertEquals("Check title", urlCheck.getTitle());
-//            assertEquals("Check description", urlCheck.getDescription());
-//            assertEquals("Check h1", urlCheck.getH1());
+
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(responseBodyString).contains("Check title");
+            assertThat(responseBodyString).contains("Check description");
+            assertThat(responseBodyString).contains("Check h1");
+
+            UrlCheck urlCheck = CheckUrlRepository.getLastCheck(id).get();
+
+            assertEquals(id, urlCheck.getUrlId());
+            assertEquals("Check title", urlCheck.getTitle());
+            assertEquals("Check description", urlCheck.getDescription());
+            assertEquals("Check h1", urlCheck.getH1());
 
         });
     }
