@@ -56,7 +56,6 @@ public class App {
         app.get(NamedRoutes.urlPath("{id}"), UrlController::show);
         app.post(NamedRoutes.urlCheckPath("{id}"), CheckUrlController::check);
 
-
         return app;
     }
 
