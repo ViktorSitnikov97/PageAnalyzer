@@ -1,9 +1,10 @@
 package hexlet.code.controllers;
 
-import hexlet.code.dto.BuildUrlPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
+import hexlet.code.repository.CheckUrlRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
@@ -11,6 +12,7 @@ import io.javalin.http.NotFoundResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,8 +33,14 @@ public class UrlController {
     public static void show(Context ctx) throws SQLException {
         Long id = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlRepository.findById(id)
-                .orElseThrow(() -> new NotFoundResponse("Site with id = " + id + "not found"));
-        UrlPage page = new UrlPage(url, null);
+                .orElseThrow(() -> new NotFoundResponse("Site with id = " + id + " not found"));
+
+        List<UrlCheck> checks = CheckUrlRepository.getEntitiesForCurrentUrl(id);
+        UrlPage page = new UrlPage(url);
+        page.setChecks(checks);
+
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/show.jte", model("page", page));
     }
 
@@ -44,16 +52,21 @@ public class UrlController {
     public static void create(Context ctx) throws SQLException {
 
         String currentUrl = ctx.formParam("url");
+        URL resultUrl = null;
         String urlName = null;
+
         try {
-            urlName = normalizedUrl(currentUrl);
-        } catch (URISyntaxException e) {
-            BuildUrlPage page = new BuildUrlPage(urlName);
-            ctx.status(422).render("index.jte", model("page", page));
+            URI uri = new URI(currentUrl);
+            resultUrl = uri.toURL();
+            urlName = normalizedUrl(resultUrl.toString());
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flashType", "danger");
+            ctx.redirect(NamedRoutes.rootPath());
+            return;
         }
 
         if (UrlRepository.existsByUrl(urlName)) {
-
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.sessionAttribute("flashType", "info");
             ctx.redirect(NamedRoutes.urlsPath());
@@ -64,7 +77,6 @@ public class UrlController {
             UrlRepository.save(url);
             ctx.redirect(NamedRoutes.urlsPath());
         }
-
     }
 
     public static void destroy(Context ctx) throws SQLException {
