@@ -1,8 +1,10 @@
 @import hexlet.code.dto.UrlPage
+@import hexlet.code.utils.FormattedTime
 @import hexlet.code.utils.NamedRoutes
 @param UrlPage page
 
 @template.layout.page(
+    page = page,
 content = @`
     <section>
         <div class="container-lg mt-5">
@@ -19,12 +21,12 @@ content = @`
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td>${page.getUrl().getCreatedAt().toString()}</td>
+                    <td>${FormattedTime.getFormattedTime(page.getUrl().getCreatedAt())}</td>
                 </tr>
                 </tbody>
             </table>
             <h2 class="mt-5">Проверки</h2>
-            <form method="post" action="/urls/{id}/checks">
+            <form method="post" action="${NamedRoutes.urlCheckPath(page.getUrl().getId())}">
                 <button type="submit" class="btn btn-primary">Запустить проверку</button>
             </form>
             <table class="table table-bordered table-hover mt-3">
@@ -37,26 +39,28 @@ content = @`
                     <th class="col-2">Дата проверки</th>
                 </thead>
                 <tbody>
+                @for(var check : page.getChecks())
                 <tr>
                     <td>
-
+                        <p>${check.getId()}</p>
                     </td>
                     <td>
-
+                        <p>${check.getStatusCode()}</p>
                     </td>
                     <td>
-
+                        <p>${check.getTitle()}</p>
                     </td>
                     <td>
-
+                        <p>${check.getH1()}</p>
                     </td>
                     <td>
-
+                        <p>${check.getDescription()}</p>
                     </td>
                     <td>
-
+                        <p>${FormattedTime.getFormattedTime(check.getCreatedAt())}</p>
                     </td>
                 </tr>
+                @endfor
                 </tbody>
             </table>
         </div>

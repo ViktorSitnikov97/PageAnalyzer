@@ -1,4 +1,6 @@
 @import hexlet.code.dto.UrlsPage
+@import hexlet.code.repository.CheckUrlRepository
+@import hexlet.code.utils.FormattedTime
 @import hexlet.code.utils.NamedRoutes
 @param UrlsPage page
 @template.layout.page(
@@ -29,10 +31,14 @@ content = @`
                         <a href = "${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                     </td>
                     <td>
-
+                        @if(CheckUrlRepository.getLastCheck(url.getId()).isPresent())
+                            ${FormattedTime.getFormattedTime(CheckUrlRepository.getLastCheck(url.getId()).get().getCreatedAt())}
+                        @endif
                     </td>
                     <td>
-
+                        @if(CheckUrlRepository.getLastCheck(url.getId()).isPresent())
+                            ${CheckUrlRepository.getLastCheck(url.getId()).get().getStatusCode()}
+                        @endif
                     </td>
                 </tr>
                 </tbody>

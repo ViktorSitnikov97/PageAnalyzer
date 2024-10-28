@@ -21,7 +21,7 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <a class="navbar-brand" href="${NamedRoutes.rootPath()}">Анализатор страниц</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav">
@@ -34,7 +34,7 @@
     </body>
     <main class="flex-grow-1">
         @if(page != null && page.getFlash() != null)
-            <div class="alert alert-${page.getFlashType()} alert-dismissible fade show" role="alert">
+            <div class="rounded-0 m-0 alert alert-${page.getFlashType()} alert-dismissible fade show" role="alert">
                 ${page.getFlash()}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
