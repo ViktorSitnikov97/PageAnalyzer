@@ -12,13 +12,12 @@ import kong.unirest.Unirest;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.sql.SQLException;
 
 
 @Slf4j
 public class CheckUrlController {
 
-    public static void check(Context ctx) throws SQLException {
+    public static void check(Context ctx) {
 
         String currentId = ctx.pathParam("id");
 
@@ -42,7 +41,7 @@ public class CheckUrlController {
             ctx.sessionAttribute("flashType", "success");
         } catch (Exception e) {
 
-            ctx.sessionAttribute("flash", "Не удалось осуществить проверку");
+            ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
         }
         ctx.redirect(NamedRoutes.urlPath(currentId));

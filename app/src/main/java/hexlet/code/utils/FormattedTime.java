@@ -12,6 +12,6 @@ public class FormattedTime {
     }
 
     public static String getFormattedTime(Timestamp time) {
-        return new SimpleDateFormat("dd/MM/yyyy HH.mm").format(time);
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(time);
     }
 }

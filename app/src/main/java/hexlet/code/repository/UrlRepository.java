@@ -59,6 +59,27 @@ public class UrlRepository extends BaseRepository {
         }
     }
 
+    public static Optional<Url> getUrlByName(String url) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE name = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, url);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                var id = resultSet.getLong("id");
+                var urlName = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("created_at");
+                Url urlObject = new Url(urlName);
+                urlObject.setId(id);
+                urlObject.setCreatedAt(createdAt);
+                return Optional.of(urlObject);
+            }
+
+            return Optional.empty();
+        }
+    }
+
     public static Boolean existsByUrl(String urlName) throws SQLException {
         String sql = "SELECT * FROM urls WHERE name = ?;";
 

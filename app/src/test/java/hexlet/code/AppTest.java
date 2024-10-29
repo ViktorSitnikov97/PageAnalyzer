@@ -12,7 +12,6 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 import org.junit.jupiter.api.AfterAll;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ public class AppTest {
 
     private Javalin app;
     private static MockWebServer mockServer;
-    private static String mockUrl;
 
     @BeforeAll
     public static void setUpAll() throws Exception {
@@ -40,8 +38,7 @@ public class AppTest {
         mockResponse.setBody(testHtmlPageBody); // установка ожидаемого тела ответа
         mockServer.enqueue(mockResponse); // установка в очередь ожидаемого ответа
         mockServer.start();
-        mockUrl = mockServer.url("/").toString(); // получение URL-адреса мок-сервера
-        // адрес вида http://localhost:12345/) для последующей проверки на SEO-пригодность
+
     }
 
     @BeforeEach
@@ -113,17 +110,24 @@ public class AppTest {
         });
     }
     @Test
-    public void testUrlCheck() throws IOException {
+    public void testUrlCheck() {
+        String mockUrl = mockServer.url("/").toString().replaceAll("/$", ""); // получение URL-адреса мок-сервера
+        // адрес вида http://localhost:12345) для последующей проверки на SEO-пригодность
+
         JavalinTest.test(app, (server, client) -> {
             String requestBody = "url=" + mockUrl;
+
             var response = client.post(NamedRoutes.urlsPath(), requestBody);
             assertThat(response.code()).isEqualTo(200);
 
             String responseBodyString = response.body().string();
-            assertThat(responseBodyString).contains(mockUrl.substring(0, mockUrl.length() - 1));
+            assertThat(responseBodyString).contains(mockUrl);
 
-            var id = 1L;
+            var id = UrlRepository.getUrlByName(mockUrl).get().getId();
+
             response = client.post(NamedRoutes.urlCheckPath(id));
+            assertThat(client.get("/urls/" + id).code()).isEqualTo(200);
+
             responseBodyString = response.body().string();
 
             assertThat(response.code()).isEqualTo(200);
