@@ -1,6 +1,5 @@
 package hexlet.code.repository;
 
-import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.model.Url;
 import hexlet.code.utils.FormattedTime;
 
@@ -11,9 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class UrlRepository extends BaseRepository {
@@ -65,7 +62,7 @@ public class UrlRepository extends BaseRepository {
     public static Optional<Url> getUrlByName(String url) throws SQLException {
         var sql = "SELECT * FROM urls WHERE name = ?";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement preparedStatement= conn.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, url);
             ResultSet resultSet = preparedStatement.executeQuery();
 
