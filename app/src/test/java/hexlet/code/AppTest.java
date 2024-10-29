@@ -113,7 +113,7 @@ public class AppTest {
         });
     }
     @Test
-    public void testUrlCheck() throws IOException {
+    public void testUrlCheck() {
         JavalinTest.test(app, (server, client) -> {
             String requestBody = "url=" + mockUrl;
             var response = client.post(NamedRoutes.urlsPath(), requestBody);
