@@ -1,17 +1,18 @@
 package hexlet.code.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FormattedTime {
-    public static Timestamp getCurrentTime() {
-        Date currentDate = new Date();
-        Timestamp timestamp = new Timestamp((currentDate.getTime()));
-        return timestamp;
+    public static LocalDateTime getCurrentTime() {
+        return LocalDateTime.now();
     }
 
-    public static String getFormattedTime(Timestamp time) {
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(time);
+    public static String getFormattedTime(LocalDateTime localDateTime) {
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, zoneId);
+        return zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
     }
 }
