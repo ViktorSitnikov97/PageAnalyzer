@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -135,7 +136,7 @@ public class AppTest {
             assertThat(responseBodyString).contains("Check description");
             assertThat(responseBodyString).contains("Check h1");
 
-            UrlCheck urlCheck = CheckUrlRepository.getLastCheck(id).get();
+            UrlCheck urlCheck = CheckUrlRepository.getLastChecks().get(id); // данный id равен url_id
 
             assertEquals(id, urlCheck.getUrlId());
             assertEquals("Check title", urlCheck.getTitle());
