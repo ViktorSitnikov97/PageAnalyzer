@@ -9,14 +9,12 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class UrlController {

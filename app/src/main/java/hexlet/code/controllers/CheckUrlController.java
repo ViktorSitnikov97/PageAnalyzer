@@ -19,7 +19,6 @@ import org.jsoup.nodes.Document;
 public class CheckUrlController {
 
     public static void check(Context ctx) {
-
         String currentId = ctx.pathParam("id");
 
         try {
