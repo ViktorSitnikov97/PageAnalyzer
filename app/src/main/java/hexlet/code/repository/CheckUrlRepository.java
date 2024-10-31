@@ -9,9 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+
 
 public class CheckUrlRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) throws SQLException {
@@ -35,7 +38,7 @@ public class CheckUrlRepository extends BaseRepository {
             preparedStatement.setString(3, h1);
             preparedStatement.setString(4, title);
             preparedStatement.setString(5, description);
-            preparedStatement.setTimestamp(6, createdAt);
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(createdAt));
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -49,37 +52,34 @@ public class CheckUrlRepository extends BaseRepository {
         }
     }
 
-    public static Optional<UrlCheck> getLastCheck(Long urlId) {
+    public static Map<Long, UrlCheck> getLastChecks() throws SQLException {
         String sql = """
-                SELECT * FROM url_checks
-                WHERE url_id = ?
-                ORDER BY created_at DESC LIMIT 1;
+                SELECT DISTINCT ON (url_id) * FROM url_checks
+                ORDER BY url_id DESC, id DESC
                 """;
 
         try (Connection conn = dataSource.getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
+            var resultSet = preparedStatement.executeQuery();
+            var result = new HashMap<Long, UrlCheck>();
 
-            preparedStatement.setLong(1, urlId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 var id = resultSet.getLong("id");
+                var urlId = resultSet.getLong("url_id");
                 var statusCode = resultSet.getInt("status_code");
-                var h1 = resultSet.getString("h1");
                 var title = resultSet.getString("title");
+                var h1 = resultSet.getString("h1");
                 var description = resultSet.getString("description");
-                var createdAt = resultSet.getTimestamp("created_at");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
 
                 UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
                 urlCheck.setId(id);
+                urlCheck.setUrlId(urlId);
                 urlCheck.setCreatedAt(createdAt);
-
-                return Optional.of(urlCheck);
+                result.put(urlId, urlCheck);
             }
-            return Optional.empty();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return result;
         }
     }
 
@@ -99,7 +99,7 @@ public class CheckUrlRepository extends BaseRepository {
                 var h1 = resultSet.getString("h1");
                 var title = resultSet.getString("title");
                 var description = resultSet.getString("description");
-                var createdAt = resultSet.getTimestamp("created_at");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
 
                 UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
                 urlCheck.setId(id);
