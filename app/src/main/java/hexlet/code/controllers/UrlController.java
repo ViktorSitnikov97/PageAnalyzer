@@ -9,21 +9,21 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-
+import java.util.Map;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class UrlController {
 
     public static void index(Context ctx) throws SQLException {
         List<Url> urls = UrlRepository.getEntities();
+        Map<Long, UrlCheck> lastChecks = CheckUrlRepository.getLastChecks();
 
-        UrlsPage page = new UrlsPage(urls);
+        UrlsPage page = new UrlsPage(urls, lastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
 
@@ -69,14 +69,13 @@ public class UrlController {
         if (UrlRepository.existsByUrl(urlName)) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.sessionAttribute("flashType", "info");
-            ctx.redirect(NamedRoutes.urlsPath());
         } else {
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.sessionAttribute("flashType", "success");
             Url url = new Url(urlName);
             UrlRepository.save(url);
-            ctx.redirect(NamedRoutes.urlsPath());
         }
+        ctx.redirect(NamedRoutes.urlsPath());
     }
 
     public static void destroy(Context ctx) throws SQLException {

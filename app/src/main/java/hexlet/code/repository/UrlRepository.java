@@ -2,7 +2,6 @@ package hexlet.code.repository;
 
 import hexlet.code.model.Url;
 import hexlet.code.utils.FormattedTime;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,11 +20,11 @@ public class UrlRepository extends BaseRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            String nameUrl = url.getName();
-            Timestamp createdAt = FormattedTime.getCurrentTime();
+            var nameUrl = url.getName();
+            var createdAt = FormattedTime.getCurrentTime();
 
             preparedStatement.setString(1, nameUrl);
-            preparedStatement.setTimestamp(2, createdAt);
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(createdAt));
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -49,7 +48,8 @@ public class UrlRepository extends BaseRepository {
 
             if (resultSet.next()) {
                 var urlName = resultSet.getString("name");
-                var createdAt = resultSet.getTimestamp("created_at");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
+
                 Url url = new Url(urlName);
                 url.setId(id);
                 url.setCreatedAt(createdAt);
@@ -69,7 +69,8 @@ public class UrlRepository extends BaseRepository {
             if (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var urlName = resultSet.getString("name");
-                var createdAt = resultSet.getTimestamp("created_at");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
+
                 Url urlObject = new Url(urlName);
                 urlObject.setId(id);
                 urlObject.setCreatedAt(createdAt);
@@ -100,9 +101,9 @@ public class UrlRepository extends BaseRepository {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                String nameUrl = resultSet.getString("name");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
-                Long id = resultSet.getLong("id");
+                var nameUrl = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
+                var id = resultSet.getLong("id");
 
                 Url url = new Url(nameUrl);
                 url.setId(id);

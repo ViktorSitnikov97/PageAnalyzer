@@ -9,6 +9,7 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +19,6 @@ import org.jsoup.nodes.Document;
 public class CheckUrlController {
 
     public static void check(Context ctx) {
-
         String currentId = ctx.pathParam("id");
 
         try {
@@ -39,10 +39,12 @@ public class CheckUrlController {
 
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flashType", "success");
-        } catch (Exception e) {
-
+        } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
-            ctx.sessionAttribute("flashType", "danger");
+            ctx.sessionAttribute("flash-type", "danger");
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", e.getMessage());
+            ctx.sessionAttribute("flash-type", "danger");
         }
         ctx.redirect(NamedRoutes.urlPath(currentId));
     }
