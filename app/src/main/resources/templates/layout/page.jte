@@ -21,7 +21,7 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="container-fluid">
             <a class="navbar-brand" href="${NamedRoutes.rootPath()}">Анализатор страниц</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav">
