@@ -41,10 +41,10 @@ public class CheckUrlController {
             ctx.sessionAttribute("flashType", "success");
         } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
-            ctx.sessionAttribute("flash-type", "danger");
+            ctx.sessionAttribute("flashType", "danger");
         } catch (Exception e) {
             ctx.sessionAttribute("flash", e.getMessage());
-            ctx.sessionAttribute("flash-type", "danger");
+            ctx.sessionAttribute("flashType", "danger");
         }
         ctx.redirect(NamedRoutes.urlPath(currentId));
     }
