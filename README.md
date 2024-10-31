@@ -40,6 +40,10 @@ make run
 
 
 ## Демонстрация
+![image](https://github.com/user-attachments/assets/7db78403-5e61-4260-a2f7-ad14a2925c87) ![image](https://github.com/user-attachments/assets/32df3809-d45e-4fa5-bd25-0ba13bb5ade6) ![image](https://github.com/user-attachments/assets/8dc84c48-87eb-40c5-afa7-82506e6fe418) ![image](https://github.com/user-attachments/assets/bc001876-64fe-4c95-9e5a-0885be1cd77a)
+
+
+
 
 
 
