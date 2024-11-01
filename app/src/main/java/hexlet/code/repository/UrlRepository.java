@@ -81,17 +81,6 @@ public class UrlRepository extends BaseRepository {
         }
     }
 
-    public static Boolean existsByUrl(String urlName) throws SQLException {
-        String sql = "SELECT * FROM urls WHERE name = ?;";
-
-        try (var conn = dataSource.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setString(1, urlName);
-            var resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        }
-    }
-
     public static List<Url> getEntities() throws SQLException {
         String sql = "SELECT * FROM urls;";
         List<Url> urls = new ArrayList<>();

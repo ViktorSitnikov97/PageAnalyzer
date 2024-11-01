@@ -31,8 +31,8 @@ public class AppTest {
         mockServer = new MockWebServer();
         MockResponse mockResponse = new MockResponse();
         String testHtmlPageBody = Files.readString(Paths.get("src/test/resources/test.html"));
-        mockResponse.setBody(testHtmlPageBody); // установка ожидаемого тела ответа
-        mockServer.enqueue(mockResponse); // установка в очередь ожидаемого ответа
+        mockResponse.setBody(testHtmlPageBody);
+        mockServer.enqueue(mockResponse);
         mockServer.start();
 
     }
@@ -64,7 +64,7 @@ public class AppTest {
             var response = client.post(NamedRoutes.urlsPath(), requestBody);
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https");
-            assertThat(UrlRepository.existsByUrl("https://github.com")).isTrue();
+            assertThat(UrlRepository.getUrlByName("https://github.com")).isNotNull();
             response.close();
         });
     }
@@ -79,7 +79,7 @@ public class AppTest {
             var responseBody = response.body().toString();
             assertThat(response.code()).isEqualTo(200);
             assertThat(responseBody.contains("github.com"));
-            assertThat(UrlRepository.existsByUrl("https://github.com")).isTrue();
+            assertThat(UrlRepository.getUrlByName("https://github.com")).isNotNull();
             response.close();
         });
     }
