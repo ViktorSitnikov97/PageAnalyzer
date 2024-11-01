@@ -10,7 +10,6 @@ import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -44,36 +43,38 @@ public class UrlController {
         ctx.render("urls/show.jte", model("page", page));
     }
 
-    private static String normalizedUrl(String url) throws URISyntaxException {
-        URI uriUrl = new URI(url);
-        return uriUrl.getScheme() + "://" + uriUrl.getAuthority();
-    }
-
     public static void create(Context ctx) throws SQLException {
 
-        String currentUrl = ctx.formParam("url");
-        URL resultUrl = null;
-        String urlName = null;
-
+        String inputUrl = ctx.formParam("url");
+        URL parsedUrl;
         try {
-            URI uri = new URI(currentUrl);
-            resultUrl = uri.toURL();
-            urlName = normalizedUrl(resultUrl.toString());
+            var uri = new URI(inputUrl);
+            parsedUrl = uri.toURL();
         } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.rootPath());
             return;
         }
+        String normalizedUrl = String
+                .format(
+                        "%s://%s%s",
+                        parsedUrl.getProtocol(),
+                        parsedUrl.getHost(),
+                        parsedUrl.getPort() == -1 ? "" : ":" + parsedUrl.getPort()
+                )
+                .toLowerCase();
 
-        if (UrlRepository.existsByUrl(urlName)) {
+        Url url = UrlRepository.getUrlByName(normalizedUrl).orElse(null);
+
+        if (url != null) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.sessionAttribute("flashType", "info");
         } else {
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.sessionAttribute("flashType", "success");
-            Url url = new Url(urlName);
-            UrlRepository.save(url);
+            Url urlNew = new Url(normalizedUrl);
+            UrlRepository.save(urlNew);
         }
         ctx.redirect(NamedRoutes.urlsPath());
     }
