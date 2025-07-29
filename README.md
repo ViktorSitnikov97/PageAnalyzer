@@ -24,7 +24,7 @@
 
 ## Установка и запуск
 ```
-git clone git@github.com:ViktorSitnikov97/java-project-72.git
+git clone git@github.com:ViktorSitnikov97/PageAnalyzer.git
 make run
 ```
 ## Технологический стек
