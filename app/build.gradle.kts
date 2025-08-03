@@ -2,8 +2,9 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    checkstyle
+    id("org.sonarqube") version "6.2.0.5505"
     jacoco
+    checkstyle
     application
     id("checkstyle")
     id("io.freefair.lombok") version "8.4"
@@ -15,6 +16,14 @@ group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 application {
     mainClass.set("hexlet.code.App")
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "ViktorSitnikov97_PageAnalyzer")
+        property("sonar.organization", "viktorsitnikov97")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
 
 repositories {
