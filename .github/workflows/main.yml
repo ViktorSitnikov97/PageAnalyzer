@@ -36,4 +36,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./app/gradlew sonar --info
-#        working-directory: app/
+        working-directory: app/
