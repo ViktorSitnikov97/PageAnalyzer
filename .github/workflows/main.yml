@@ -20,6 +20,8 @@ jobs:
       - run: make test
       - run: make report
       - run: make lint
+#      - name: Set execute permissions for sonar-test
+#        run: chmod +x ./gradlew sonar --info
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -36,3 +38,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar --info
+        working-directory: app/
