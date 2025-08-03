@@ -37,6 +37,7 @@ make run
 > * Веб: Bootstrap
 > * Парсер: Jsoup
 > * Тесты: JUnit 5, Unirest, Mockwebserver
+> * Отчет об анализе кода: SonarQube
 > * Отчет о тестах: Jacoco
 > * Линтер: Checkstyle
 > * Базы данных: H2 (внутренняя), PostgreSQL (в продакшн)
