@@ -35,5 +35,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_NAME: "PageAnalyzer"
+          SONAR_PROJECT_KEY: "ViktorSitnikov97_PageAnalyzer"
         run: ./gradlew sonar --info
         working-directory: app/

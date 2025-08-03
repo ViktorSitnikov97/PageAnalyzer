@@ -20,6 +20,7 @@ application {
 
 sonar {
     properties {
+        property("sonar.projectName", "PageAnalyzer")
         property("sonar.projectKey", "ViktorSitnikov97_PageAnalyzer")
         property("sonar.organization", "viktorsitnikov97")
         property("sonar.host.url", "https://sonarcloud.io")
